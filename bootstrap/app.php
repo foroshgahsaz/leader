@@ -11,6 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectUsersTo('/dashboard');
+
         $middleware->alias([
             'org.context' => \App\Http\Middleware\SetOrganizationContext::class,
         ]);

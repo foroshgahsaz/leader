@@ -19,7 +19,11 @@ use App\Livewire\Settings\TeamManagement;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
+});
 
 Route::middleware(['auth', 'verified', 'org.context'])->group(function () {
     Route::get('dashboard', DashboardIndex::class)->name('dashboard');
