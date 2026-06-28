@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $heading ?? __('Settings') }}</h2>
-        @isset($subheading)
-            <p class="mt-1 text-sm text-gray-600">{{ $subheading }}</p>
-        @endisset
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ isset($heading) ? __($heading) : __('Settings') }}</h2>
+                @isset($subheading)
+                    <p class="mt-1 text-sm text-gray-600">{{ __($subheading) }}</p>
+                @endisset
     </x-slot>
 
     <div class="py-8">

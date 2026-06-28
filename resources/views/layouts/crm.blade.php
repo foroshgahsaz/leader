@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $heading ?? __('CRM') }}</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ isset($heading) ? __($heading) : __('CRM') }}</h2>
                 @isset($subheading)
-                    <p class="mt-1 text-sm text-gray-600">{{ $subheading }}</p>
+                    <p class="mt-1 text-sm text-gray-600">{{ __($subheading) }}</p>
                 @endisset
             </div>
             @isset($actions)

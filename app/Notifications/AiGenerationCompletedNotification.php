@@ -22,12 +22,15 @@ class AiGenerationCompletedNotification extends Notification implements ShouldQu
 
     public function toArray(object $notifiable): array
     {
-        $buyerName = $this->generation->buyer?->name ?? 'your request';
+        $buyerName = $this->generation->buyer?->name ?? __('your request');
 
         return [
             'type' => 'ai_generation_completed',
-            'title' => $this->generation->type->label().' ready',
-            'body' => "AI {$this->generation->type->label()} for {$buyerName} is ready to review.",
+            'title' => __(':type ready', ['type' => $this->generation->type->label()]),
+            'body' => __('AI :type for :buyer is ready to review.', [
+                'type' => $this->generation->type->label(),
+                'buyer' => $buyerName,
+            ]),
             'url' => $this->generation->buyer_id
                 ? route('discover.leads.show', $this->generation->buyer_id)
                 : route('discover.index'),

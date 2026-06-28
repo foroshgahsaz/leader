@@ -10,10 +10,6 @@ enum OrgMemberStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Active => 'Active',
-            self::Invited => 'Invited',
-            self::Deactivated => 'Deactivated',
-        };
+        return __('enums.org_member_status.'.$this->value);
     }
 }

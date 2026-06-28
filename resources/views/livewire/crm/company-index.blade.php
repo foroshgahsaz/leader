@@ -42,7 +42,7 @@
             <select wire:model.live="pipelineStage" id="pipelineStage" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <option value="">{{ __('All stages') }}</option>
                 @foreach ($stages as $stage)
-                    <option value="{{ $stage->key }}">{{ $stage->label }}</option>
+                    <option value="{{ $stage->key }}">{{ $stage->localizedLabel() }}</option>
                 @endforeach
             </select>
         </div>
@@ -92,7 +92,7 @@
                         <td class="px-4 py-3 text-gray-600">{{ $company->owner?->fullName() ?? '—' }}</td>
                         <td class="px-4 py-3">
                             <span class="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">
-                                {{ $company->deal?->stage?->label ?? ucfirst($company->pipeline_stage ?? 'new') }}
+                                {{ $company->deal?->stage?->localizedLabel() ?? __('pipeline.' . ($company->pipeline_stage ?? 'new')) }}
                             </span>
                         </td>
                         <td class="px-4 py-3 text-gray-600">

@@ -34,4 +34,11 @@ class PipelineStage extends Model
     {
         return $this->hasMany(Deal::class, 'stage_id');
     }
+
+    public function localizedLabel(): string
+    {
+        $key = 'pipeline.'.$this->key;
+
+        return __($key) !== $key ? __($key) : $this->label;
+    }
 }

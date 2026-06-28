@@ -15,15 +15,6 @@ enum CrmTimelineEntryType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Activity => 'Activity',
-            self::CrmActivity => 'Logged Activity',
-            self::Note => 'Note',
-            self::Task => 'Task',
-            self::Meeting => 'Meeting',
-            self::File => 'File',
-            self::StageChange => 'Stage Change',
-            self::System => 'System',
-        };
+        return __('enums.crm_timeline_entry_type.'.$this->value);
     }
 }

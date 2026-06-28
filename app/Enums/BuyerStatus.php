@@ -14,15 +14,7 @@ enum BuyerStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::New => 'New',
-            self::Saved => 'Saved',
-            self::Contacted => 'Contacted',
-            self::Replied => 'Replied',
-            self::Qualified => 'Qualified',
-            self::Unqualified => 'Unqualified',
-            self::DoNotContact => 'Do Not Contact',
-        };
+        return __('enums.buyer_status.'.$this->value);
     }
 
     public static function options(): array

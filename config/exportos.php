@@ -6,7 +6,7 @@ return [
 
     'default_timezone' => 'UTC',
 
-    'default_locale' => 'en',
+    'default_locale' => env('APP_LOCALE', 'fa'),
 
     'roles' => [
         'admin',

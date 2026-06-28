@@ -133,4 +133,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->name = $this->fullName();
     }
+
+    public function preferredLocale(): string
+    {
+        $locale = $this->locale ?? config('locales.default', config('app.locale'));
+
+        return \App\Support\Locale::isSupported($locale) ? $locale : 'en';
+    }
 }
