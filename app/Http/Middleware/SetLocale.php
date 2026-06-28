@@ -22,20 +22,30 @@ class SetLocale
 
     protected function resolveLocale(Request $request): string
     {
-        $user = $request->user();
-
-        if ($user && Locale::isSupported($user->locale)) {
-            return $user->locale;
-        }
-
         $sessionLocale = $request->session()->get('locale');
 
         if (is_string($sessionLocale) && Locale::isSupported($sessionLocale)) {
             return $sessionLocale;
         }
 
-        $configured = config('locales.default', config('app.locale', 'en'));
+        $appLocale = config('app.locale', 'fa');
 
-        return Locale::isSupported($configured) ? $configured : 'en';
+        $user = $request->user();
+
+        if ($user) {
+            if ($user->locale === 'en' && $appLocale === 'fa') {
+                $user->forceFill(['locale' => 'fa'])->saveQuietly();
+
+                return 'fa';
+            }
+
+            if (Locale::isSupported($user->locale)) {
+                return $user->locale;
+            }
+
+            return Locale::isSupported($appLocale) ? $appLocale : 'en';
+        }
+
+        return Locale::isSupported($appLocale) ? $appLocale : 'en';
     }
 }

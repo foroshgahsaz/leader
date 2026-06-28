@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('job_title')->nullable()->after('last_name');
             $table->string('avatar_path')->nullable()->after('job_title');
             $table->string('timezone')->nullable()->after('avatar_path');
-            $table->string('locale', 10)->default('en')->after('timezone');
+            $table->string('locale', 10)->default('fa')->after('timezone');
             $table->timestamp('last_login_at')->nullable()->after('locale');
             $table->foreignUuid('current_organization_id')->nullable()->after('last_login_at')
                 ->constrained('organizations')->nullOnDelete();

@@ -20,7 +20,7 @@ new class extends Component
 
     public string $timezone = 'UTC';
 
-    public string $locale = 'en';
+    public string $locale = 'fa';
 
     public function mount(): void
     {
@@ -31,7 +31,7 @@ new class extends Component
         $this->job_title = $user->job_title ?? '';
         $this->email = $user->email;
         $this->timezone = $user->timezone ?? config('exportos.default_timezone', 'UTC');
-        $this->locale = $user->locale ?? config('exportos.default_locale', 'en');
+        $this->locale = $user->locale ?? config('exportos.default_locale', 'fa');
     }
 
     public function updateProfileInformation(UpdateUserProfileAction $updateUserProfileAction): void
@@ -44,10 +44,12 @@ new class extends Component
             'job_title' => ['nullable', 'string', 'max:150'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
             'timezone' => ['required', 'string', 'max:64'],
-            'locale' => ['required', 'string', 'max:10'],
+            'locale' => ['required', 'string', 'max:10', Rule::in(\App\Support\Locale::supported())],
         ]);
 
         $updated = $updateUserProfileAction->execute($user, UpdateUserProfileData::fromArray($validated));
+
+        Session::put('locale', $updated->locale);
 
         if ($user->email !== $updated->email) {
             $updated->email_verified_at = null;
