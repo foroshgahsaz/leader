@@ -4,6 +4,7 @@ namespace App\Services\LeadFinder;
 
 use App\Contracts\Repositories\BuyerSearchRepositoryInterface;
 use App\Data\LeadFinder\BuyerSearchCriteriaData;
+use App\Data\LeadFinder\BuyerSearchResponseData;
 use App\Data\LeadFinder\BuyerSearchResultData;
 use App\Enums\ScoreBand;
 use App\Models\GlobalBuyer;
@@ -21,14 +22,21 @@ class BuyerSearchService
         protected BuyerSearchRepositoryInterface $buyerSearchRepository,
         protected LeadScoringService $leadScoringService,
         protected OrganizationContext $organizationContext,
+        protected ExternalBuyerFetchService $externalBuyerFetchService,
     ) {}
 
     public function search(
         BuyerSearchCriteriaData $criteria,
         User $user,
         ?string $savedSearchId = null,
-    ): LengthAwarePaginator {
+        bool $fetchExternal = true,
+    ): BuyerSearchResponseData {
         $startedAt = hrtime(true);
+
+        $externalImported = $fetchExternal
+            ? $this->externalBuyerFetchService->fetchForSearch($criteria)
+            : null;
+        $externalProvider = $externalImported !== null ? 'apollo' : null;
 
         $rawPaginator = $this->buyerSearchRepository->search($criteria);
         $product = $this->resolveProduct($criteria);
@@ -37,9 +45,16 @@ class BuyerSearchService
 
         $durationMs = (int) ((hrtime(true) - $startedAt) / 1_000_000);
 
-        $this->logExecution($criteria, $user, $savedSearchId, $rawPaginator->total(), $durationMs);
+        $this->logExecution(
+            $criteria,
+            $user,
+            $savedSearchId,
+            $rawPaginator->total(),
+            $durationMs,
+            $externalImported,
+        );
 
-        return new Paginator(
+        $paginator = new Paginator(
             $results->values()->all(),
             $rawPaginator->total(),
             $rawPaginator->perPage(),
@@ -48,6 +63,12 @@ class BuyerSearchService
                 'path' => $rawPaginator->path(),
                 'pageName' => $rawPaginator->getPageName(),
             ],
+        );
+
+        return new BuyerSearchResponseData(
+            results: $paginator,
+            externalImported: $externalImported,
+            externalProvider: $externalProvider,
         );
     }
 
@@ -106,6 +127,7 @@ class BuyerSearchService
         ?string $savedSearchId,
         int $resultCount,
         int $durationMs,
+        ?int $externalImported = null,
     ): void {
         $organizationId = $this->organizationContext->id();
 
@@ -113,14 +135,21 @@ class BuyerSearchService
             return;
         }
 
+        $criteriaPayload = $criteria->toArray();
+
+        if ($externalImported !== null) {
+            $criteriaPayload['external_imported'] = $externalImported;
+            $criteriaPayload['external_provider'] = config('apollo.enabled') ? 'apollo' : null;
+        }
+
         SearchExecution::query()->create([
             'organization_id' => $organizationId,
             'user_id' => $user->id,
             'saved_search_id' => $savedSearchId,
-            'criteria' => $criteria->toArray(),
+            'criteria' => $criteriaPayload,
             'result_count' => $resultCount,
             'duration_ms' => $durationMs,
-            'credit_consumed' => 1,
+            'credit_consumed' => $externalImported !== null && $externalImported > 0 ? 1 : 0,
             'executed_at' => now(),
         ]);
     }

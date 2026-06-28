@@ -50,17 +50,30 @@ class LeadSearch extends Component
 
     public bool $searched = false;
 
+    public bool $fetchExternal = false;
+
+    public ?int $externalImported = null;
+
+    public ?string $externalProvider = null;
+
+    public ?string $searchError = null;
+
     public function mount(): void
     {
         $this->authorize('search', \App\Models\Buyer::class);
 
         if ($this->hasActiveFilters()) {
             $this->searched = true;
+            $this->fetchExternal = true;
         }
     }
 
     public function search(): void
     {
+        $this->searchError = null;
+        $this->externalImported = null;
+        $this->externalProvider = null;
+        $this->fetchExternal = true;
         $this->resetPage();
         $this->searched = true;
     }
@@ -77,9 +90,13 @@ class LeadSearch extends Component
             'maxScore',
             'sortBy',
             'sortDirection',
+            'externalImported',
+            'externalProvider',
+            'searchError',
         ]);
         $this->resetPage();
         $this->searched = false;
+        $this->fetchExternal = false;
     }
 
     public function saveLead(string $globalBuyerId, SaveBuyerAction $saveBuyerAction): void
@@ -145,17 +162,33 @@ class LeadSearch extends Component
     {
         /** @var LengthAwarePaginator|null $results */
         $results = null;
+        $apolloEnabled = config('apollo.enabled') && filled(config('apollo.api_key'));
 
         if ($this->searched) {
-            $results = $runBuyerSearchAction->execute(
-                $this->criteria(),
-                auth()->user(),
-            );
+            try {
+                $response = $runBuyerSearchAction->execute(
+                    $this->criteria(),
+                    auth()->user(),
+                    fetchExternal: $this->fetchExternal,
+                );
+
+                $results = $response->results;
+
+                if ($this->fetchExternal) {
+                    $this->externalImported = $response->externalImported;
+                    $this->externalProvider = $response->externalProvider;
+                }
+            } catch (\RuntimeException $exception) {
+                $this->searchError = $exception->getMessage();
+            } finally {
+                $this->fetchExternal = false;
+            }
         }
 
         return view('livewire.lead-finder.lead-search', [
             'results' => $results,
             'companyTypes' => CompanyType::options(),
+            'apolloEnabled' => $apolloEnabled,
         ]);
     }
 }
