@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('meeting_url')->nullable();
             $table->string('status')->default('scheduled');
-            $table->timestamp('starts_at');
-            $table->timestamp('ends_at');
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
