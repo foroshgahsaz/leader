@@ -99,6 +99,24 @@ class ApolloLeadSearchTest extends TestCase
         Http::assertNothingSent();
     }
 
+    public function test_search_shows_cloudflare_block_message(): void
+    {
+        Http::fake([
+            'api.apollo.io/api/v1/mixed_companies/search' => Http::response(
+                '<!DOCTYPE html><html class="no-js ie6 oldie">Cloudflare</html>',
+                403,
+            ),
+        ]);
+
+        $user = $this->createOrganizationUser();
+
+        Livewire::actingAs($user)
+            ->test(\App\Livewire\LeadFinder\LeadSearch::class)
+            ->set('countries', 'TR')
+            ->call('search')
+            ->assertSee('Cloudflare');
+    }
+
     public function test_search_shows_error_when_apollo_request_fails(): void
     {
         Http::fake([
@@ -111,7 +129,7 @@ class ApolloLeadSearchTest extends TestCase
             ->test(\App\Livewire\LeadFinder\LeadSearch::class)
             ->set('countries', 'TR')
             ->call('search')
-            ->assertSee('Unable to fetch buyers from Apollo');
+            ->assertSee('Unauthorized');
     }
 
     public function test_pagination_does_not_re_fetch_from_apollo(): void

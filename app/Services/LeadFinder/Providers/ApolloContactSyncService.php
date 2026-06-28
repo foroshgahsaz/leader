@@ -8,7 +8,6 @@ use App\Models\GlobalBuyer;
 use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ApolloContactSyncService
@@ -32,12 +31,7 @@ class ApolloContactSyncService
         }
 
         try {
-            $response = Http::baseUrl(rtrim((string) config('apollo.base_url'), '/'))
-                ->timeout((int) config('apollo.timeout', 30))
-                ->withHeaders([
-                    'X-Api-Key' => (string) config('apollo.api_key'),
-                    'Content-Type' => 'application/json',
-                ])
+            $response = ApolloHttpClient::make()
                 ->post('/mixed_people/organization_top_people', [
                     'organization_id' => $apolloId,
                 ])

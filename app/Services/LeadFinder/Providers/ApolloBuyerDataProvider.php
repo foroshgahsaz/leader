@@ -9,7 +9,6 @@ use App\Enums\CompanyType;
 use App\Support\CountryName;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -43,33 +42,32 @@ class ApolloBuyerDataProvider implements BuyerDataProviderInterface
         }
 
         try {
-            $response = Http::baseUrl(rtrim((string) config('apollo.base_url'), '/'))
-                ->timeout((int) config('apollo.timeout', 30))
-                ->withHeaders([
-                    'X-Api-Key' => (string) config('apollo.api_key'),
-                    'Content-Type' => 'application/json',
-                    'Cache-Control' => 'no-cache',
-                ])
+            $response = ApolloHttpClient::make()
                 ->post((string) config('apollo.organization_search_path', '/mixed_companies/search'), $payload)
                 ->throw();
-        } catch (ConnectionException|RequestException $exception) {
-            $status = $exception instanceof RequestException
-                ? $exception->response?->status()
-                : null;
-
+        } catch (ConnectionException $exception) {
             Log::warning('Apollo organization search failed', [
                 'message' => $exception->getMessage(),
-                'status' => $status,
-                'response' => $exception instanceof RequestException
-                    ? $exception->response?->json()
-                    : null,
                 'payload' => $payload,
             ]);
 
             throw new \RuntimeException(
-                __('Unable to fetch buyers from Apollo. Please check your API key and try again.'),
+                __('Unable to reach Apollo API. Check your internet connection, firewall, or APOLLO_HTTP_PROXY setting.'),
                 previous: $exception,
             );
+        } catch (RequestException $exception) {
+            $body = (string) ($exception->response?->body() ?? '');
+
+            Log::warning('Apollo organization search failed', [
+                'message' => $exception->getMessage(),
+                'status' => $exception->response?->status(),
+                'response' => $exception->response?->json(),
+                'response_snippet' => Str::limit($body, 500),
+                'cloudflare_block' => ApolloApiException::isCloudflareBlock($body),
+                'payload' => $payload,
+            ]);
+
+            throw ApolloApiException::fromRequestException($exception);
         }
 
         $organizations = $response->json('organizations', []);

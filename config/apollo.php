@@ -13,6 +13,10 @@ return [
         '/mixed_companies/search',
     ),
 
+    'user_agent' => env('APOLLO_USER_AGENT', 'ExportOS/1.0 (+https://github.com/foroshgahsaz/leader)'),
+
+    'http_proxy' => env('APOLLO_HTTP_PROXY'),
+
     'timeout' => (int) env('APOLLO_TIMEOUT', 30),
 
     'per_page' => (int) env('APOLLO_PER_PAGE', 25),
