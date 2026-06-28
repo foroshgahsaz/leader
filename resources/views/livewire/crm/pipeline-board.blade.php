@@ -17,7 +17,7 @@
                 x-on:drop.prevent="$wire.changeStage(draggingDealId, '{{ $stage->id }}')"
             >
                 <div class="border-b border-gray-200 px-4 py-3">
-                    <h3 class="text-sm font-semibold text-gray-900">{{ $stage->label }}</h3>
+                    <h3 class="text-sm font-semibold text-gray-900">{{ $stage->localizedLabel() }}</h3>
                     <p class="text-xs text-gray-500">{{ $stage->deals->count() }} {{ __('deals') }}</p>
                 </div>
                 <div class="space-y-3 p-3 min-h-[200px]">
@@ -46,7 +46,7 @@
                                     class="mt-2 block w-full rounded-md border-gray-300 text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 >
                                     @foreach ($stages as $moveStage)
-                                        <option value="{{ $moveStage->id }}" @selected($moveStage->id === $deal->stage_id)>{{ $moveStage->label }}</option>
+                                        <option value="{{ $moveStage->id }}" @selected($moveStage->id === $deal->stage_id)>{{ $moveStage->localizedLabel() }}</option>
                                     @endforeach
                                 </select>
                             @endcan

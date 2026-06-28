@@ -11,12 +11,7 @@ enum CrmMeetingStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Scheduled => 'Scheduled',
-            self::Completed => 'Completed',
-            self::Cancelled => 'Cancelled',
-            self::NoShow => 'No Show',
-        };
+        return __('enums.crm_meeting_status.'.$this->value);
     }
 
     public static function options(): array

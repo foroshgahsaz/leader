@@ -11,12 +11,7 @@ enum TaskStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Snoozed => 'Snoozed',
-            self::Completed => 'Completed',
-            self::Cancelled => 'Cancelled',
-        };
+        return __('enums.task_status.'.$this->value);
     }
 
     public static function options(): array

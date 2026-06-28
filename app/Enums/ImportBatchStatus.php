@@ -11,11 +11,6 @@ enum ImportBatchStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Processing => 'Processing',
-            self::Completed => 'Completed',
-            self::Failed => 'Failed',
-        };
+        return __('enums.import_batch_status.'.$this->value);
     }
 }

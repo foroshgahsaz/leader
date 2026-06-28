@@ -17,6 +17,6 @@ enum ActivityAction: string
 
     public function label(): string
     {
-        return str_replace('_', ' ', ucfirst($this->value));
+        return __('enums.activity_action.'.$this->value);
     }
 }

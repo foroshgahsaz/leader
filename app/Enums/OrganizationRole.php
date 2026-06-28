@@ -10,11 +10,7 @@ enum OrganizationRole: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Admin => 'Administrator',
-            self::Manager => 'Manager',
-            self::Rep => 'Sales Representative',
-        };
+        return __('enums.organization_role.'.$this->value);
     }
 
     public static function assignableBy(OrganizationRole $actor): array

@@ -83,7 +83,7 @@ class CrmReportService
             ->get()
             ->map(fn (PipelineStage $stage) => [
                 'key' => $stage->key,
-                'label' => $stage->label,
+                'label' => $stage->localizedLabel(),
                 'deals_count' => $stage->deals_count,
                 'value' => (float) ($stage->deals_sum_estimated_value ?? 0),
                 'color' => $stage->color,

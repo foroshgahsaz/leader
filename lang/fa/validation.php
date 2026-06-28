@@ -1,0 +1,87 @@
+<?php
+
+return [
+
+    'accepted' => 'فیلد :attribute باید پذیرفته شود.',
+    'active_url' => 'فیلد :attribute یک آدرس معتبر نیست.',
+    'after' => 'فیلد :attribute باید تاریخی بعد از :date باشد.',
+    'after_or_equal' => 'فیلد :attribute باید تاریخی بعد از یا برابر :date باشد.',
+    'alpha' => 'فیلد :attribute فقط می‌تواند شامل حروف باشد.',
+    'alpha_dash' => 'فیلد :attribute فقط می‌تواند شامل حروف، اعداد، خط تیره و زیرخط باشد.',
+    'alpha_num' => 'فیلد :attribute فقط می‌تواند شامل حروف و اعداد باشد.',
+    'array' => 'فیلد :attribute باید یک آرایه باشد.',
+    'before' => 'فیلد :attribute باید تاریخی قبل از :date باشد.',
+    'before_or_equal' => 'فیلد :attribute باید تاریخی قبل از یا برابر :date باشد.',
+    'between' => [
+        'array' => 'فیلد :attribute باید بین :min و :max آیتم داشته باشد.',
+        'file' => 'فیلد :attribute باید بین :min و :max کیلوبایت باشد.',
+        'numeric' => 'فیلد :attribute باید بین :min و :max باشد.',
+        'string' => 'فیلد :attribute باید بین :min و :max کاراکتر باشد.',
+    ],
+    'boolean' => 'فیلد :attribute باید درست یا نادرست باشد.',
+    'confirmed' => 'تأیید فیلد :attribute مطابقت ندارد.',
+    'date' => 'فیلد :attribute یک تاریخ معتبر نیست.',
+    'email' => 'فیلد :attribute باید یک ایمیل معتبر باشد.',
+    'exists' => 'مقدار انتخاب‌شده برای :attribute نامعتبر است.',
+    'file' => 'فیلد :attribute باید یک فایل باشد.',
+    'filled' => 'فیلد :attribute الزامی است.',
+    'gt' => [
+        'numeric' => 'فیلد :attribute باید بزرگ‌تر از :value باشد.',
+        'string' => 'فیلد :attribute باید بیشتر از :value کاراکتر داشته باشد.',
+    ],
+    'gte' => [
+        'numeric' => 'فیلد :attribute باید بزرگ‌تر یا مساوی :value باشد.',
+        'string' => 'فیلد :attribute باید حداقل :value کاراکتر داشته باشد.',
+    ],
+    'image' => 'فیلد :attribute باید یک تصویر باشد.',
+    'in' => 'مقدار انتخاب‌شده برای :attribute نامعتبر است.',
+    'integer' => 'فیلد :attribute باید یک عدد صحیح باشد.',
+    'json' => 'فیلد :attribute باید یک رشته JSON معتبر باشد.',
+    'lt' => [
+        'numeric' => 'فیلد :attribute باید کمتر از :value باشد.',
+        'string' => 'فیلد :attribute باید کمتر از :value کاراکتر داشته باشد.',
+    ],
+    'lte' => [
+        'numeric' => 'فیلد :attribute باید کمتر یا مساوی :value باشد.',
+        'string' => 'فیلد :attribute نباید بیشتر از :value کاراکتر داشته باشد.',
+    ],
+    'max' => [
+        'array' => 'فیلد :attribute نباید بیشتر از :max آیتم داشته باشد.',
+        'file' => 'فیلد :attribute نباید بیشتر از :max کیلوبایت باشد.',
+        'numeric' => 'فیلد :attribute نباید بیشتر از :max باشد.',
+        'string' => 'فیلد :attribute نباید بیشتر از :max کاراکتر داشته باشد.',
+    ],
+    'mimes' => 'فیلد :attribute باید یک فایل از نوع: :values باشد.',
+    'min' => [
+        'array' => 'فیلد :attribute باید حداقل :min آیتم داشته باشد.',
+        'file' => 'فیلد :attribute باید حداقل :min کیلوبایت باشد.',
+        'numeric' => 'فیلد :attribute باید حداقل :min باشد.',
+        'string' => 'فیلد :attribute باید حداقل :min کاراکتر داشته باشد.',
+    ],
+    'not_in' => 'مقدار انتخاب‌شده برای :attribute نامعتبر است.',
+    'numeric' => 'فیلد :attribute باید یک عدد باشد.',
+    'required' => 'فیلد :attribute الزامی است.',
+    'same' => 'فیلد :attribute و :other باید یکسان باشند.',
+    'size' => [
+        'string' => 'فیلد :attribute باید :size کاراکتر باشد.',
+    ],
+    'string' => 'فیلد :attribute باید یک رشته باشد.',
+    'unique' => 'مقدار :attribute قبلاً استفاده شده است.',
+    'url' => 'فیلد :attribute باید یک آدرس معتبر باشد.',
+
+    'attributes' => [
+        'email' => 'ایمیل',
+        'password' => 'رمز عبور',
+        'password_confirmation' => 'تأیید رمز عبور',
+        'first_name' => 'نام',
+        'last_name' => 'نام خانوادگی',
+        'company_name' => 'نام شرکت',
+        'country_code' => 'کد کشور',
+        'website' => 'وب‌سایت',
+        'name' => 'نام',
+        'title' => 'عنوان',
+        'description' => 'توضیحات',
+        'file' => 'فایل',
+    ],
+
+];

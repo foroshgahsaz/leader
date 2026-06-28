@@ -128,9 +128,9 @@ new class extends Component
             <div>
                 <x-input-label for="locale" :value="__('Language')" />
                 <select wire:model="locale" id="locale" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <option value="en">English</option>
-                    <option value="de">Deutsch</option>
-                    <option value="tr">Türkçe</option>
+                    @foreach (\App\Support\Locale::options() as $code => $name)
+                        <option value="{{ $code }}">{{ $name }}</option>
+                    @endforeach
                 </select>
                 <x-input-error class="mt-2" :messages="$errors->get('locale')" />
             </div>

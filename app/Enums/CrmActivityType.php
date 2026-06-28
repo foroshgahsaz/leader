@@ -13,14 +13,7 @@ enum CrmActivityType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Call => 'Call',
-            self::Email => 'Email',
-            self::Visit => 'Visit',
-            self::Demo => 'Demo',
-            self::Linkedin => 'LinkedIn',
-            self::Other => 'Other',
-        };
+        return __('enums.crm_activity_type.'.$this->value);
     }
 
     public static function options(): array

@@ -11,12 +11,7 @@ enum AiGenerationStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Processing => 'Processing',
-            self::Completed => 'Completed',
-            self::Failed => 'Failed',
-        };
+        return __('enums.ai_generation_status.'.$this->value);
     }
 
     public function isTerminal(): bool

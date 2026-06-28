@@ -10,10 +10,6 @@ enum TaskPriority: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::High => 'High',
-            self::Medium => 'Medium',
-            self::Low => 'Low',
-        };
+        return __('enums.task_priority.'.$this->value);
     }
 }

@@ -11,11 +11,6 @@ enum LeadSource: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Search => 'Search',
-            self::Import => 'Import',
-            self::Manual => 'Manual',
-            self::Recommendation => 'Recommendation',
-        };
+        return __('enums.lead_source.'.$this->value);
     }
 }

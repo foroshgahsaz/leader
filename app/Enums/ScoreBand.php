@@ -10,11 +10,7 @@ enum ScoreBand: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::High => 'High',
-            self::Medium => 'Medium',
-            self::Low => 'Low',
-        };
+        return __('enums.score_band.'.$this->value);
     }
 
     public static function fromScore(int $score): self

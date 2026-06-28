@@ -24,8 +24,8 @@ class AiGenerationFailedNotification extends Notification implements ShouldQueue
     {
         return [
             'type' => 'ai_generation_failed',
-            'title' => $this->generation->type->label().' failed',
-            'body' => $this->generation->error_message ?? 'The AI generation could not be completed.',
+            'title' => __(':type failed', ['type' => $this->generation->type->label()]),
+            'body' => $this->generation->error_message ?? __('The AI generation could not be completed.'),
             'url' => $this->generation->buyer_id
                 ? route('discover.leads.show', $this->generation->buyer_id)
                 : route('discover.index'),

@@ -10,10 +10,6 @@ enum OrganizationStatus: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Active => 'Active',
-            self::Suspended => 'Suspended',
-            self::Cancelled => 'Cancelled',
-        };
+        return __('enums.organization_status.'.$this->value);
     }
 }

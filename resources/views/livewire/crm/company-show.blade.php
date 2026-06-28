@@ -13,7 +13,7 @@
     <div class="rounded-lg border border-gray-200 p-4">
         <div class="flex flex-wrap gap-4 text-sm text-gray-600">
             <div><span class="font-medium text-gray-900">{{ __('Owner') }}:</span> {{ $company->owner?->fullName() ?? '—' }}</div>
-            <div><span class="font-medium text-gray-900">{{ __('Stage') }}:</span> {{ $company->deal?->stage?->label ?? ucfirst($company->pipeline_stage ?? 'new') }}</div>
+            <div><span class="font-medium text-gray-900">{{ __('Stage') }}:</span> {{ $company->deal?->stage?->localizedLabel() ?? __('pipeline.' . ($company->pipeline_stage ?? 'new')) }}</div>
             <div><span class="font-medium text-gray-900">{{ __('Status') }}:</span> {{ $company->status->label() }}</div>
             @if ($company->website)
                 <div><span class="font-medium text-gray-900">{{ __('Website') }}:</span>
@@ -454,7 +454,7 @@
             <div class="rounded-lg border border-gray-200 p-4 space-y-3">
                 <h3 class="text-lg font-medium text-gray-900">{{ $company->deal->title }}</h3>
                 <div class="grid gap-4 sm:grid-cols-2 text-sm">
-                    <div><span class="font-medium text-gray-900">{{ __('Stage') }}:</span> {{ $company->deal->stage?->label }}</div>
+                    <div><span class="font-medium text-gray-900">{{ __('Stage') }}:</span> {{ $company->deal->stage?->localizedLabel() }}</div>
                     <div><span class="font-medium text-gray-900">{{ __('Value') }}:</span>
                         @if ($company->deal->estimated_value)
                             {{ number_format((float) $company->deal->estimated_value, 2) }} {{ $company->deal->currency_code }}
@@ -494,7 +494,7 @@
                             <select wire:model="dealStageId" id="dealStageId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">{{ __('Default stage') }}</option>
                                 @foreach ($stages as $stage)
-                                    <option value="{{ $stage->id }}">{{ $stage->label }}</option>
+                                    <option value="{{ $stage->id }}">{{ $stage->localizedLabel() }}</option>
                                 @endforeach
                             </select>
                         </div>

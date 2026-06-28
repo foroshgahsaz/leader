@@ -14,15 +14,7 @@ enum AiGenerationType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Email => 'Email',
-            self::Whatsapp => 'WhatsApp',
-            self::FollowUp => 'Follow-up',
-            self::Translate => 'Translate',
-            self::CompanySummary => 'Company Summary',
-            self::NextBestAction => 'Next Best Action',
-            self::RiskAnalysis => 'Risk Analysis',
-        };
+        return __('enums.ai_generation_type.'.$this->value);
     }
 
     public function requiresBuyer(): bool

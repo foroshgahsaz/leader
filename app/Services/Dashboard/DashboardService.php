@@ -189,7 +189,7 @@ class DashboardService
             ->get()
             ->map(fn (PipelineStage $stage) => [
                 'key' => $stage->key,
-                'label' => $stage->label,
+                'label' => $stage->localizedLabel(),
                 'color' => $stage->color,
                 'deals_count' => $stage->deals_count,
                 'value' => (float) ($stage->deals_sum_estimated_value ?? 0),
