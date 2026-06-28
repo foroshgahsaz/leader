@@ -11,6 +11,7 @@ use App\Models\GlobalBuyer;
 use App\Models\User;
 use App\Services\LeadFinder\CompanySummaryService;
 use App\Services\LeadFinder\LeadScoringService;
+use App\Services\LeadFinder\Providers\ApolloContactSyncService;
 use App\Services\Logging\ActivityLogger;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +22,7 @@ class SaveBuyerAction
         protected GlobalBuyerRepositoryInterface $globalBuyerRepository,
         protected LeadScoringService $leadScoringService,
         protected CompanySummaryService $companySummaryService,
+        protected ApolloContactSyncService $apolloContactSyncService,
         protected ActivityLogger $activityLogger,
     ) {}
 
@@ -41,6 +43,7 @@ class SaveBuyerAction
 
             $this->persistScore($buyer, $globalBuyer);
             $this->companySummaryService->generate($globalBuyer, $buyer);
+            $this->apolloContactSyncService->syncForBuyer($buyer, $actor);
 
             $this->activityLogger->log(
                 action: ActivityAction::Created,

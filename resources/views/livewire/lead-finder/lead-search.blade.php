@@ -5,6 +5,18 @@
     @if (session('error'))
         <div class="rounded-md bg-red-50 p-4 text-sm text-red-800">{{ session('error') }}</div>
     @endif
+    @if ($searchError)
+        <div class="rounded-md bg-red-50 p-4 text-sm text-red-800">{{ $searchError }}</div>
+    @endif
+    @if ($externalImported !== null && $externalProvider)
+        <div class="rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+            @if ($externalImported > 0)
+                {{ __(':count buyers imported from :provider.', ['count' => $externalImported, 'provider' => ucfirst($externalProvider)]) }}
+            @else
+                {{ __('No new buyers found on :provider for this search.', ['provider' => ucfirst($externalProvider)]) }}
+            @endif
+        </div>
+    @endif
 
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap gap-2">
@@ -63,8 +75,14 @@
         </div>
 
         <div class="flex items-end gap-2 lg:col-span-3">
-            <x-primary-button type="submit">{{ __('Search') }}</x-primary-button>
+            <x-primary-button type="submit" wire:loading.attr="disabled" wire:target="search">
+                <span wire:loading.remove wire:target="search">{{ __('Search') }}</span>
+                <span wire:loading wire:target="search">{{ __('Searching...') }}</span>
+            </x-primary-button>
             <x-secondary-button type="button" wire:click="resetFilters">{{ __('Reset') }}</x-secondary-button>
+            @if ($apolloEnabled)
+                <span class="text-xs text-gray-500 self-center">{{ __('Live search via Apollo') }}</span>
+            @endif
         </div>
     </form>
 
@@ -137,7 +155,12 @@
 
         {{ $results->links() }}
     @elseif (! $searched)
-        <p class="text-sm text-gray-500">{{ __('Enter search criteria and click Search to find global buyers.') }}</p>
+        <p class="text-sm text-gray-500">
+            {{ __('Enter search criteria and click Search to find global buyers.') }}
+            @if ($apolloEnabled)
+                {{ __('Results are fetched live from Apollo and matched with your local database.') }}
+            @endif
+        </p>
     @endif
 
     @can('import', \App\Models\Buyer::class)

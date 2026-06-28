@@ -20,5 +20,10 @@ interface GlobalBuyerRepositoryInterface
 
     public function upsertFromImport(ImportLeadRowData $data, string $providerKey): GlobalBuyer;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    public function upsertFromProvider(string $providerKey, array $attributes): GlobalBuyer;
+
     public function delete(string $id): bool;
 }

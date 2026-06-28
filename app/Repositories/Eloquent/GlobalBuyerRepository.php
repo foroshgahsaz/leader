@@ -72,6 +72,14 @@ class GlobalBuyerRepository implements GlobalBuyerRepositoryInterface
         );
     }
 
+    public function upsertFromProvider(string $providerKey, array $attributes): GlobalBuyer
+    {
+        return GlobalBuyer::query()->updateOrCreate(
+            ['provider_key' => $providerKey],
+            $attributes,
+        );
+    }
+
     public function delete(string $id): bool
     {
         $globalBuyer = GlobalBuyer::query()->find($id);
