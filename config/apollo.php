@@ -8,6 +8,11 @@ return [
 
     'base_url' => env('APOLLO_BASE_URL', 'https://api.apollo.io/api/v1'),
 
+    'organization_search_path' => env(
+        'APOLLO_ORGANIZATION_SEARCH_PATH',
+        '/mixed_companies/search',
+    ),
+
     'timeout' => (int) env('APOLLO_TIMEOUT', 30),
 
     'per_page' => (int) env('APOLLO_PER_PAGE', 25),

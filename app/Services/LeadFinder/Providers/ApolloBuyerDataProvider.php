@@ -50,11 +50,19 @@ class ApolloBuyerDataProvider implements BuyerDataProviderInterface
                     'Content-Type' => 'application/json',
                     'Cache-Control' => 'no-cache',
                 ])
-                ->post('/organizations/search', $payload)
+                ->post((string) config('apollo.organization_search_path', '/mixed_companies/search'), $payload)
                 ->throw();
         } catch (ConnectionException|RequestException $exception) {
+            $status = $exception instanceof RequestException
+                ? $exception->response?->status()
+                : null;
+
             Log::warning('Apollo organization search failed', [
                 'message' => $exception->getMessage(),
+                'status' => $status,
+                'response' => $exception instanceof RequestException
+                    ? $exception->response?->json()
+                    : null,
                 'payload' => $payload,
             ]);
 
@@ -132,7 +140,7 @@ class ApolloBuyerDataProvider implements BuyerDataProviderInterface
         $keywords = [];
 
         foreach ($parts as $part) {
-            foreach (preg_split('/[,;]+/', (string) $part) ?: [] as $token) {
+            foreach (preg_split('/[,;]+/', trim((string) $part)) ?: [] as $token) {
                 $token = trim($token);
 
                 if ($token !== '') {

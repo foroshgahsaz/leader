@@ -36,7 +36,7 @@ class ApolloLeadSearchTest extends TestCase
     public function test_search_fetches_buyers_from_apollo_and_displays_them(): void
     {
         Http::fake([
-            'api.apollo.io/api/v1/organizations/search' => Http::response([
+            'api.apollo.io/api/v1/mixed_companies/search' => Http::response([
                 'organizations' => [
                     [
                         'id' => 'apollo-org-1',
@@ -67,7 +67,7 @@ class ApolloLeadSearchTest extends TestCase
         ]);
 
         Http::assertSent(function ($request): bool {
-            return $request->url() === 'https://api.apollo.io/api/v1/organizations/search'
+            return $request->url() === 'https://api.apollo.io/api/v1/mixed_companies/search'
                 && $request->hasHeader('X-Api-Key', 'test-apollo-key')
                 && $request['organization_locations'] === ['Turkey']
                 && $request['q_organization_name'] === 'Ankara Steel';
@@ -102,7 +102,7 @@ class ApolloLeadSearchTest extends TestCase
     public function test_search_shows_error_when_apollo_request_fails(): void
     {
         Http::fake([
-            'api.apollo.io/api/v1/organizations/search' => Http::response(['error' => 'Unauthorized'], 401),
+            'api.apollo.io/api/v1/mixed_companies/search' => Http::response(['error' => 'Unauthorized'], 401),
         ]);
 
         $user = $this->createOrganizationUser();
@@ -117,7 +117,7 @@ class ApolloLeadSearchTest extends TestCase
     public function test_pagination_does_not_re_fetch_from_apollo(): void
     {
         Http::fake([
-            'api.apollo.io/api/v1/organizations/search' => Http::response([
+            'api.apollo.io/api/v1/mixed_companies/search' => Http::response([
                 'organizations' => array_map(
                     fn (int $index): array => [
                         'id' => "apollo-org-{$index}",
